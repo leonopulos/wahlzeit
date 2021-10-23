@@ -33,10 +33,19 @@ public class Location {
         setPhoto(p);
 	}
 
+    /**
+	 * 
+	 * @methodtype set (bi-directional with private attribute Photo.location)
+	 */
     void setPhoto(Photo p) {
         photo = p;
+        p.location = this;
     }
 
+    /**
+	 * 
+	 * @methodtype get
+	 */
     Photo getPhoto() {
         return photo;
     }
@@ -104,22 +113,38 @@ class Coordinate {
         location = l;
     }
 
+    /**
+	 * @methodtype get
+	 */
     int getX() {
         return x;
     }
 
+    /**
+	 * @methodtype get
+	 */
     int getY() {
         return y;
     }
 
+    /**
+	 * @methodtype get
+	 */
     int getZ() {
         return z;
     }
 
+    /**
+	 * @methodtype set (bi-directional with private attribute Location.coordinate)
+	 */
     void setLocation(Location loc) {
         location = loc;
+        loc.coordinate = this;
     }
 
+    /**
+	 * @methodtype get
+	 */
     Location getLocation() {
         return location;
     }

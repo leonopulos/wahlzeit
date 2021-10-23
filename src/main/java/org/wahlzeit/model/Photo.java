@@ -468,20 +468,4 @@ public class Photo extends DataObject {
 		return creationTime;
 	}
 
-	/**
-	 * 
-	 * @methodtype set
-	 */
-	public void setLocation(Location loc) {
-		location = loc;
-	}
-	
-	/**
-	 * 
-	 * @methodtype get
-	 */
-	public Location getLocation() {
-		return location;
-	}
-	
 }
