@@ -93,20 +93,20 @@ public class Location {
  */
 class Coordinate {
     
-    private int x, y, z;
+    private double x, y, z;
 
     /*
      * The Location object currently associated with this Coordinate.
      */
     private Location location;
 
-    public Coordinate(int x, int y, int z) {
+    public Coordinate(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
-    public Coordinate(int x, int y, int z, Location l) {
+    public Coordinate(double x, double y, double z, Location l) {
         this.x = x;
         this.y = y;
         this.z = z;
@@ -116,21 +116,21 @@ class Coordinate {
     /**
 	 * @methodtype get
 	 */
-    int getX() {
+    double getX() {
         return x;
     }
 
     /**
 	 * @methodtype get
 	 */
-    int getY() {
+    double getY() {
         return y;
     }
 
     /**
 	 * @methodtype get
 	 */
-    int getZ() {
+    double getZ() {
         return z;
     }
 
