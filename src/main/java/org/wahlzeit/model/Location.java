@@ -10,7 +10,7 @@ package org.wahlzeit.model;
  */
 public class Location {
     
-    public Coordinate coordinate;
+    protected Coordinate coordinate;
 
     /**
 	 * Locations objects can be linked with a Photo object
@@ -37,7 +37,7 @@ public class Location {
 	 * 
 	 * @methodtype set (bi-directional with private attribute Photo.location)
 	 */
-    void setPhoto(Photo p) {
+    protected void setPhoto(Photo p) {
         photo = p;
         p.location = this;
     }
@@ -46,7 +46,7 @@ public class Location {
 	 * 
 	 * @methodtype get
 	 */
-    Photo getPhoto() {
+    public Photo getPhoto() {
         return photo;
     }
 
@@ -116,28 +116,28 @@ class Coordinate {
     /**
 	 * @methodtype get
 	 */
-    double getX() {
+    public double getX() {
         return x;
     }
 
     /**
 	 * @methodtype get
 	 */
-    double getY() {
+    public double getY() {
         return y;
     }
 
     /**
 	 * @methodtype get
 	 */
-    double getZ() {
+    public double getZ() {
         return z;
     }
 
     /**
 	 * @methodtype set (bi-directional with private attribute Location.coordinate)
 	 */
-    void setLocation(Location loc) {
+    protected void setLocation(Location loc) {
         location = loc;
         loc.coordinate = this;
     }
@@ -145,7 +145,7 @@ class Coordinate {
     /**
 	 * @methodtype get
 	 */
-    Location getLocation() {
+    public Location getLocation() {
         return location;
     }
 

@@ -92,7 +92,7 @@ public class Photo extends DataObject {
 	/**
 	 * Location data associated with this Photo (or null).
 	 */
-	public Location location;
+	protected Location location;
 	
 	/**
 	 * 
@@ -466,6 +466,20 @@ public class Photo extends DataObject {
 	 */
 	public long getCreationTime() {
 		return creationTime;
+	}
+
+	/**
+	 * @methodtype set
+	 */
+	public void setLocation(Location newLocation) {
+		location = newLocation;
+	}
+	
+	/**
+	 * @methodtype get
+	 */
+	public Location getLocation() {
+		return location;
 	}
 
 }
