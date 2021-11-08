@@ -38,18 +38,22 @@ public class Location {
 	 * @methodtype set (bi-directional with private attribute Photo.location)
 	 */
     protected void setPhoto(Photo p) {
+        if (p == null) throw new NullPointerException("Photo must not be null when setting Location.photo parameter");
+
         photo = p;
         p.location = this;
     }
 
     /**
-	 * 
 	 * @methodtype get
 	 */
     public Photo getPhoto() {
         return photo;
     }
 
+    public Coordinate getCoordinat() {
+        return this.coordinate;
+    }
 
     /*
      * Custom Java-Object methods for hashCode, equals and toString
@@ -58,9 +62,9 @@ public class Location {
 	public int hashCode() {
         int result = 0;
         if (photo != null) {
-            result += photo.hashCode();
+            result += 3 * photo.hashCode();
         }
-        result += coordinate.hashCode();
+        result += 5 * coordinate.hashCode();
 
         return result;
 	}
@@ -74,9 +78,11 @@ public class Location {
 		if (getClass() != obj.getClass())
 			return false;
         Location other = (Location) obj;
-		if (photo != other.photo)
+		if (photo != null && other.photo != null &&
+            !photo.equals(other.photo))
 			return false;
-        if (coordinate != other.coordinate)
+        if (coordinate != null && other.coordinate != null &&
+            !coordinate.equals(other.coordinate))
             return false;
 
 		return true;
@@ -137,9 +143,11 @@ class Coordinate {
     /**
 	 * @methodtype set (bi-directional with private attribute Location.coordinate)
 	 */
-    protected void setLocation(Location loc) {
+    protected Coordinate setLocation(Location loc) {
         location = loc;
         loc.coordinate = this;
+
+        return this;
     }
 
     /**
@@ -147,6 +155,19 @@ class Coordinate {
 	 */
     public Location getLocation() {
         return location;
+    }
+
+    // Cartesian distance
+    public double getDistance(Coordinate other) {
+        if (other == null) return Double.NaN;
+
+        double dist = 0.0;
+
+        dist += (this.x - other.getX()) * (this.x - other.getX());
+        dist += (this.y - other.getY()) * (this.y - other.getY());
+        dist += (this.z - other.getZ()) * (this.z - other.getZ());
+
+        return dist;
     }
 
     /*
@@ -158,9 +179,9 @@ class Coordinate {
         if (location != null) {
             result += location.hashCode();
         }
-        result += 3 * x;
-        result += 7 * y;
-        result -= 11 * z;
+        result += 2 * Double.valueOf(x).hashCode();
+        result -= 3 * Double.valueOf(y).hashCode();
+        result += 5 * Double.valueOf(z).hashCode();
 		
         return result;
 	}
@@ -180,7 +201,8 @@ class Coordinate {
             return false;
         if (z != other.z)
             return false;
-        if (location != other.location)
+        if (location != null && other.location != null &&
+            !location.equals(other.location))
             return false;
 
 		return true;
@@ -190,7 +212,9 @@ class Coordinate {
 	public String toString() {
 		return "(" + x + ", " + y + ", " + z + ")";
 	}
+
+    public boolean isEqual(Coordinate other) {
+        return this.equals(other);
+    }
 }
-
-
 
