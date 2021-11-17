@@ -10,18 +10,15 @@ import java.sql.*;
 public class CubePhoto extends Photo {
 
     public CubePhoto() {
-        id = PhotoId.getNextId();
-        incWriteCount();
+        super();
     }
 
     public CubePhoto(PhotoId myId) {
-        id = myId;
-
-        incWriteCount();
+        super(myId);
     }
 
     public CubePhoto(ResultSet rset) throws SQLException {
-        readFrom(rset);
+        super(rset);
     }
 
 }

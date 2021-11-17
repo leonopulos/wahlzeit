@@ -73,7 +73,7 @@ public class PhotoManager extends ObjectManager {
 	public PhotoManager() {
 		photoTagCollector = PhotoFactory.getInstance().createPhotoTagCollector();
 	}
-	
+
 	/**
 	 * @methodtype boolean-query
 	 * @methodproperties primitive

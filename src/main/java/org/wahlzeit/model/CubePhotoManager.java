@@ -9,7 +9,7 @@ import java.sql.*;
 
 public class CubePhotoManager extends PhotoManager {
 
-    protected Photo createObject(ResultSet rset) throws SQLException {
+    protected CubePhoto createObject(ResultSet rset) throws SQLException {
         return CubePhotoFactory.getInstance().createPhoto(rset);
     }
 
