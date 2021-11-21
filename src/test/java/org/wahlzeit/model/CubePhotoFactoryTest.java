@@ -19,18 +19,14 @@ public class CubePhotoFactoryTest {
 
     @Test
     public void testPhotoFactory() {
-        // while (true) {
-        //     try { 
-        //         if (CubePhotoFactory.getInstance() != null) break;
-        //     } catch (IllegalStateException e) { break; }
-        // }
 		CubePhotoFactory.initialize(); 
 
         Photo p1 = CubePhotoFactory.getInstance().createPhoto();
-        Photo p2 = CubePhotoFactory.getInstance().createPhoto(PhotoId.getRandomId());
+        Photo p2 = CubePhotoFactory.getInstance().createPhoto(PhotoId.NULL_ID);
 
         assertTrue(p1 != null);
         assertTrue(p2 != null);
+        assertFalse(p1.equals(p2));
     }
 
 }
