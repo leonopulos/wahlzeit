@@ -92,7 +92,7 @@ public class Photo extends DataObject {
 	/**
 	 * Location data associated with this Photo (or null).
 	 */
-	protected Location location = new Location(new Coordinate(0, 0, 0));
+	protected Location location;
 	
 	/**
 	 * 
@@ -158,8 +158,8 @@ public class Photo extends DataObject {
 		double x = rset.getDouble("coord_x");
 		double y = rset.getDouble("coord_y");
 		double z = rset.getDouble("coord_z");
-		Coordinate coordinate = new Coordinate(x, y, z);
-		location = new Location(coordinate.setLocation(location), this);
+		CartesianCoordinate coordinate = new CartesianCoordinate(x, y, z, location);
+		location = new Location(coordinate, this);
 	}
 	
 	/**
@@ -180,9 +180,9 @@ public class Photo extends DataObject {
 		rset.updateInt("praise_sum", praiseSum);
 		rset.updateInt("no_votes", noVotes);
 		rset.updateLong("creation_time", creationTime);
-		rset.updateDouble("coord_x", location.coordinate.getX());
-		rset.updateDouble("coord_y", location.coordinate.getY());
-		rset.updateDouble("coord_z", location.coordinate.getZ());
+		rset.updateDouble("coord_x", location.coordinate.asCartesianCoordinate().getX());
+		rset.updateDouble("coord_y", location.coordinate.asCartesianCoordinate().getY());
+		rset.updateDouble("coord_z", location.coordinate.asCartesianCoordinate().getZ());
 	}
 
 	/**
