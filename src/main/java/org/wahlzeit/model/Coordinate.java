@@ -7,13 +7,31 @@ package org.wahlzeit.model;
 
 public interface Coordinate {
 
+    /**
+     * @return a CartesianCoordinate Object representing this Coordinate
+     */
     public CartesianCoordinate asCartesianCoordinate();
 
-    public double getCartesianDistance(Coordinate c) throws NullPointerException;
-
+    /**
+     * @return a SphericCoordinate Object representing this Coordinate
+     */
     public SphericCoordinate asSphericCoordinate();
 
-    public double getCentralAngle(Coordinate c) throws NullPointerException;
+    /**
+     * Returns the Cartesian Distance (Euclidian Norm) between this Coordinate Object and the other Coordinate Object.
+     * @throws NullPointerException if the other Coordinate is null.
+     */
+    public double getCartesianDistance(Coordinate other) throws NullPointerException;
 
-    public boolean isEqual(Coordinate c);
+    /**
+     * Returns the Central Angle between this Coordinate Object and the other Coordinate Object.
+     * @throws NullPointerException if the other Coordinate is null.
+     */
+    public double getCentralAngle(Coordinate other) throws NullPointerException;
+
+    /**
+     * Checks if other is within a certain (small) cartesian distance to this. Thus avoids double comparison errors.
+     * @return true iff the other coordinate is semantically equal to this Object.
+     */
+    public boolean isEqual(Coordinate other);
 }

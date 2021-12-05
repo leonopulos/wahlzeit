@@ -10,23 +10,34 @@ public class SphericCoordinate extends AbstractCoordinate {
     private double phi, theta, radius;
 
     public SphericCoordinate(double phi, double theta, double radius) {
+        assertNotNaN(phi, theta, radius);
+
         this.phi = phi;
         this.theta = theta;
         this.radius = radius;
+
+        assertNotNaN(this.phi, this.theta, this.radius);
     }
 
     public SphericCoordinate(double phi, double theta, double radius, Location l) {
+        assertNotNaN(phi, theta, radius);
+        assertNotNull(l);
+
         this.phi = phi;
         this.theta = theta;
         this.radius = radius;
 
         this.setLocation(l);
+
+        assertNotNaN(this.phi, this.theta, this.radius);
+        assertNotNull(this.getLocation());
     }
 
     /**
      * @methodtype get
      */
     public double getPhi() {
+        assertNotNaN(phi);
         return phi;
     }
 
@@ -34,6 +45,7 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @methodtype get
      */
     public double getTheta() {
+        assertNotNaN(theta);
         return theta;
     }
 
@@ -41,30 +53,24 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @methodtype get
      */
     public double getRadius() {
+        assertNotNaN(radius);
         return radius;
-    }
-
-    static SphericCoordinate fromCartesian(CartesianCoordinate c) {
-        double x = c.getX();
-        double y = c.getY();
-        double z = c.getZ();
-
-        double radius = Math.sqrt(x*x + y*y + z*z);
-        double theta = radius == 0 ? 0 : Math.acos(z / radius);
-        double phi = Math.atan2(y, x);
-
-        return new SphericCoordinate(phi, theta, radius, c.getLocation());
     }
 
     // Coordinate interface methods
     @Override
     public CartesianCoordinate asCartesianCoordinate() {
-        return CartesianCoordinate.fromSpheric(this);
+        return fromSpheric(this);
     }
 
     @Override
     public double getCartesianDistance(Coordinate c) {
-        return this.asCartesianCoordinate().getCartesianDistance(c);
+        assertNotNull(c);
+
+        double distance = this.asCartesianCoordinate().getCartesianDistance(c);
+        assertNotNaN(distance);
+
+        return distance;
     }
 
     @Override
@@ -73,10 +79,13 @@ public class SphericCoordinate extends AbstractCoordinate {
     }
 
     /**
-     * Custom Java-Object methods for hashCode, equals and toString
+     * Method implemented according to Java language standard. If two SphericCoordinate Objects are equals() they will have the same hashCode
+     * @return a hash code value for this SphericCoordinate.
      */
     @Override
     public int hashCode() {
+        assertNotNaN(radius, theta, phi);
+
         int result = 0;
         if (getLocation() != null) {
             result += getLocation().hashCode();
@@ -89,7 +98,9 @@ public class SphericCoordinate extends AbstractCoordinate {
     }
 
     /**
-     * Checks if objects are truly equal, meaning all fields have exact same value
+     * Compares this SphericCoordinate to the specified object.
+     * @param obj object for comparison to this.
+     * @return true iff the argument is not null and is a SphericCoordinate object that has the same attribute values as this object.
      */
     @Override
     public boolean equals(Object obj) {
@@ -113,8 +124,21 @@ public class SphericCoordinate extends AbstractCoordinate {
         return true;
     }
 
+    /**
+     * @return a string representation of this Location. Including the values for the instance attributes
+     */
     @Override
     public String toString() {
+        assertNotNaN(radius, theta, phi);
         return "(" + radius + ", " + theta + ", " + phi + ") [SPHERIC]";
+    }
+
+    /**
+     * Asserts that all class invariant conditions are true. These depend on the semantics of the domain model.
+     */
+    public void assertClassInvariants() {
+        assertNotNaN(radius, theta, phi);
+
+        super.assertClassInvariants();
     }
 }

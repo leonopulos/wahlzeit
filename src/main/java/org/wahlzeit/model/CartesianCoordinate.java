@@ -14,23 +14,34 @@ public class CartesianCoordinate extends AbstractCoordinate {
     private double x, y, z;
 
     public CartesianCoordinate(double x, double y, double z) {
+        assertNotNaN(x, y, z);
+
         this.x = x;
         this.y = y;
         this.z = z;
+
+        assertNotNaN(this.x, this.y, this.z);
     }
 
     public CartesianCoordinate(double x, double y, double z, Location l) {
+        assertNotNaN(x, y, z);
+        assertNotNull(l);
+
         this.x = x;
         this.y = y;
         this.z = z;
 
         this.setLocation(l);
+
+        assertNotNaN(this.x, this.y, this.z);
+        assertNotNull(this.getLocation());
     }
 
     /**
      * @methodtype get
      */
     public double getX() {
+        assertNotNaN(this.x);
         return x;
     }
 
@@ -38,6 +49,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
      * @methodtype get
      */
     public double getY() {
+        assertNotNaN(this.y);
         return y;
     }
 
@@ -45,11 +57,14 @@ public class CartesianCoordinate extends AbstractCoordinate {
      * @methodtype get
      */
     public double getZ() {
+        assertNotNaN(this.z);
         return z;
     }
 
     // Cartesian distance
     private double getDistance(CartesianCoordinate other) {
+        assertNotNaN(this.x, this.y, this.z);
+
         if (other == null) return Double.NaN;
 
         double dist = 0.0;
@@ -59,18 +74,6 @@ public class CartesianCoordinate extends AbstractCoordinate {
         dist += (this.z - other.getZ()) * (this.z - other.getZ());
 
         return dist;
-    }
-
-    static CartesianCoordinate fromSpheric(SphericCoordinate c) {
-        double r = c.getRadius();
-        double phi = c.getPhi();
-        double theta = c.getTheta();
-
-        double x = r * Math.cos(phi) * Math.sin(theta);
-        double y = r * Math.sin(phi) * Math.sin(theta);
-        double z = r * Math.cos(theta);
-
-        return new CartesianCoordinate(x, y, z, c.getLocation());
     }
 
     /**
@@ -83,19 +86,27 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
     @Override
     public double getCartesianDistance(Coordinate c) {
-        return this.getDistance(c.asCartesianCoordinate());
+        assertNotNull(c);
+
+        double distance = this.getDistance(c.asCartesianCoordinate());
+        assertNotNaN(distance);
+
+        return distance;
     }
 
     @Override
     public SphericCoordinate asSphericCoordinate() {
-        return SphericCoordinate.fromCartesian(this);
+        return fromCartesian(this);
     }
 
     /**
-     * Custom Java-Object methods for hashCode, equals and toString
+     * Method implemented according to Java language standard. If two CartesianCoordinate Objects are equals() they will have the same hashCode
+     * @return a hash code value for this CartesianCoordinate.
      */
     @Override
     public int hashCode() {
+        assertNotNaN(this.x, this.y, this.z);
+
         int result = 0;
         if (getLocation() != null) {
             result += getLocation().hashCode();
@@ -108,7 +119,9 @@ public class CartesianCoordinate extends AbstractCoordinate {
     }
 
     /**
-     * Checks if objects are truly equal, meaning all fields have exact same value
+     * Compares this CartesianCoordinate to the specified object.
+     * @param obj object for comparison to this.
+     * @return true iff the argument is not null and is a CartesianCoordinate object that has the same attribute values as this object.
      */
     @Override
     public boolean equals(Object obj) {
@@ -132,8 +145,22 @@ public class CartesianCoordinate extends AbstractCoordinate {
         return true;
     }
 
+    /**
+     * @return a string representation of this Location. Including the values for the instance attributes
+     */
     @Override
     public String toString() {
+        assertNotNaN(this.x, this.y, this.z);
+
         return "(" + x + ", " + y + ", " + z + ") [CARTESIAN]";
+    }
+
+    /**
+     * Asserts that all class invariant conditions are true. These depend on the semantics of the domain model.
+     */
+    public void assertClassInvariants() {
+        assertNotNaN(this.x, this.y, this.z);
+
+        super.assertClassInvariants();
     }
 }

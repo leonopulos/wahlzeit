@@ -20,7 +20,7 @@ public class CoordinateTest {
     public void testCartesianCoordinate() {
         // constructors
         CartesianCoordinate c1 = new CartesianCoordinate(0, 0, 0);
-        CartesianCoordinate c2 = new CartesianCoordinate(0, 0, 0.1, null);
+        CartesianCoordinate c2 = new CartesianCoordinate(0, 0, 0.1);
 
         // getters for coords
         assertTrue(c1.getX() == 0);
@@ -53,19 +53,19 @@ public class CoordinateTest {
         assertTrue(c1.getCentralAngle(c2) >= 0);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = AssertionError.class)
     public void testCartesianCoordinateDistanceToNull() {
         CartesianCoordinate c1 = new CartesianCoordinate(0, 0, 0);
         c1.getCartesianDistance(null);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = AssertionError.class)
     public void testCartesianCoordinateCentralAngleWithNull() {
         CartesianCoordinate c1 = new CartesianCoordinate(0, 0, 0);
         c1.getCentralAngle(null);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = AssertionError.class)
     public void testCartesianCoordinateConversionFromNull() {
         CartesianCoordinate.fromSpheric(null);
     }
@@ -74,7 +74,7 @@ public class CoordinateTest {
     public void testSphericCoordinate() {
         // constructors
         SphericCoordinate c1 = new SphericCoordinate(0, 0, 0);
-        SphericCoordinate c2 = new SphericCoordinate(0, 0, 0.1, null);
+        SphericCoordinate c2 = new SphericCoordinate(0, 0, 0.1);
 
         // getters for coords
         assertTrue(c1.getPhi() == 0);
@@ -107,19 +107,19 @@ public class CoordinateTest {
         assertTrue(c1.getCentralAngle(c2) >= 0);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = AssertionError.class)
     public void testSphericCoordinateDistanceToNull() {
         SphericCoordinate c1 = new SphericCoordinate(0, 0, 0);
         c1.getCartesianDistance(null);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = AssertionError.class)
     public void testSphericCoordinateCentralAngleWithNull() {
         SphericCoordinate c1 = new SphericCoordinate(0, 0, 0);
         c1.getCentralAngle(null);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = AssertionError.class)
     public void testSphericCoordinateConversionFromNull() {
         SphericCoordinate.fromCartesian(null);
     }

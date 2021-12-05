@@ -9,32 +9,36 @@ package org.wahlzeit.model;
  * Simple Location class to link Photos with their Location data.
  */
 public class Location {
-    
+
     protected Coordinate coordinate;
 
     /**
-	 * Locations objects can be linked with a Photo object
+	 * Location objects can be linked with a Photo object
 	 */
     private Photo photo;
 
     /**
-	 * Locations require a Coordiante object
+	 * Locations require a Coordinate object
 	 */
 	public Location(Coordinate c) {
         if (c == null) throw new NullPointerException("Coordinate must not be null when creating Location object");
         
         coordinate = c;
-	}
+
+        assertNotNull(this.coordinate);
+    }
 
     public Location(Coordinate c, Photo p) {
         if (c == null) throw new NullPointerException("Coordinate must not be null when creating Location object");
         
         coordinate = c;
         setPhoto(p);
+
+        assertNotNull(this.coordinate);
+        assertNotNull(this.photo);
 	}
 
     /**
-	 * 
 	 * @methodtype set (bi-directional with private attribute Photo.location)
 	 */
     protected void setPhoto(Photo p) {
@@ -42,6 +46,8 @@ public class Location {
 
         photo = p;
         p.setLocation(this);
+
+        assertNotNull(this.photo);
     }
 
     /**
@@ -51,12 +57,17 @@ public class Location {
         return photo;
     }
 
+    /**
+     * @methodtype get
+     */
     public Coordinate getCoordinate() {
+        assertNotNull(this.coordinate);
         return this.coordinate;
     }
 
-    /*
-     * Custom Java-Object methods for hashCode, equals and toString
+    /**
+     * Method implemented according to Java language standard. If two Location Objects are equals() they will have the same hashCode
+     * @return a hash code value for this Location.
      */
 	@Override
 	public int hashCode() {
@@ -69,6 +80,11 @@ public class Location {
         return result;
 	}
 
+    /**
+     * Compares this Location to the specified object.
+     * @param obj object for comparison to this.
+     * @return true iff the argument is not null and is a Location object that has the same attribute values as this object.
+     */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -88,10 +104,27 @@ public class Location {
 		return true;
 	}
 
+    /**
+     * @return a string representation of the object.
+     */
 	@Override
 	public String toString() {
 		return "Location " + coordinate.toString();
 	}
+
+    /**
+     * Asserts that all class invariant conditions are true. These depend on the semantics of the domain model.
+     */
+    public void assertClassInvariants() {
+        // make sure photo is either not set or correctly refers back to this
+        assert assertNotNull(this.photo) || this.photo.location == this;
+    }
+
+    private boolean assertNotNull(Object o) {
+        assert o != null;
+
+        return o != null;
+    }
 }
 
 
