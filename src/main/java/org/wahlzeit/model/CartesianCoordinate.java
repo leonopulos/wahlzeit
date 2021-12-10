@@ -73,6 +73,8 @@ public class CartesianCoordinate extends AbstractCoordinate {
         dist += (this.y - other.getY()) * (this.y - other.getY());
         dist += (this.z - other.getZ()) * (this.z - other.getZ());
 
+        assert dist >= 0;
+
         return dist;
     }
 

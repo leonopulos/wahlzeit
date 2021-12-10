@@ -31,6 +31,7 @@ public class CoordinateTest {
         Location l = new Location(c2);
         c2.setLocation(l);
         assertTrue(c2.getLocation() == l);
+        assertTrue(c2.getLocation().coordinate == c2);
 
         // isEqual
         assertTrue(c1.isEqual(c1));
@@ -44,25 +45,34 @@ public class CoordinateTest {
 
         // asSphericCoordinate
         SphericCoordinate sc1 = c1.asSphericCoordinate();
-        assertTrue(sc1.getRadius() != Double.NaN);
-        assertTrue(sc1.getTheta() != Double.NaN);
-        assertTrue(sc1.getPhi() != Double.NaN);
+        assertTrue(!Double.isNaN(sc1.getRadius()));
+        assertTrue(!Double.isNaN(sc1.getTheta()));
+        assertTrue(!Double.isNaN(sc1.getPhi()));
         assertEquals(0.01, sc1.getCartesianDistance(c2.asSphericCoordinate()), 0.01);
 
         // getCentralAngle
         assertTrue(c1.getCentralAngle(c2) >= 0);
+
+        c1.assertClassInvariants();
+        c2.assertClassInvariants();
+        l.assertClassInvariants();
+        sc1.assertClassInvariants();
     }
 
     @Test(expected = AssertionError.class)
     public void testCartesianCoordinateDistanceToNull() {
         CartesianCoordinate c1 = new CartesianCoordinate(0, 0, 0);
         c1.getCartesianDistance(null);
+
+        c1.assertClassInvariants();
     }
 
     @Test(expected = AssertionError.class)
     public void testCartesianCoordinateCentralAngleWithNull() {
         CartesianCoordinate c1 = new CartesianCoordinate(0, 0, 0);
         c1.getCentralAngle(null);
+
+        c1.assertClassInvariants();
     }
 
     @Test(expected = AssertionError.class)
@@ -85,6 +95,7 @@ public class CoordinateTest {
         Location l = new Location(c2);
         c2.setLocation(l);
         assertTrue(c2.getLocation() == l);
+        assertTrue(c2.getLocation().coordinate == c2);
 
         // isEqual
         assertTrue(c1.isEqual(c1));
@@ -98,25 +109,34 @@ public class CoordinateTest {
 
         // asCartesianCoordinate
         CartesianCoordinate cc1 = c1.asCartesianCoordinate();
-        assertTrue(cc1.getX() != Double.NaN);
-        assertTrue(cc1.getY() != Double.NaN);
-        assertTrue(cc1.getZ() != Double.NaN);
+        assertTrue(!Double.isNaN(cc1.getX()));
+        assertTrue(!Double.isNaN(cc1.getY()));
+        assertTrue(!Double.isNaN(cc1.getZ()));
         assertEquals(0.01, cc1.getCartesianDistance(c2.asSphericCoordinate()), 0.01);
 
         // getCentralAngle
         assertTrue(c1.getCentralAngle(c2) >= 0);
+
+        c1.assertClassInvariants();
+        c2.assertClassInvariants();
+        l.assertClassInvariants();
+        cc1.assertClassInvariants();
     }
 
     @Test(expected = AssertionError.class)
     public void testSphericCoordinateDistanceToNull() {
         SphericCoordinate c1 = new SphericCoordinate(0, 0, 0);
         c1.getCartesianDistance(null);
+
+        c1.assertClassInvariants();
     }
 
     @Test(expected = AssertionError.class)
     public void testSphericCoordinateCentralAngleWithNull() {
         SphericCoordinate c1 = new SphericCoordinate(0, 0, 0);
         c1.getCentralAngle(null);
+
+        c1.assertClassInvariants();
     }
 
     @Test(expected = AssertionError.class)

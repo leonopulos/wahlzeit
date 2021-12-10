@@ -56,6 +56,7 @@ public abstract class AbstractCoordinate implements Coordinate {
         double C = Math.sqrt(deltaX*deltaX + deltaY*deltaY + deltaZ*deltaZ);
 
         assertNotNaN(C);
+        assert C >= 0 && C <= 2 * Math.PI;
 
         return 2 * Math.asin(C / 2);
     }
@@ -157,6 +158,15 @@ public abstract class AbstractCoordinate implements Coordinate {
      */
     public void assertClassInvariants() {
         // make sure coordinate is either not linked to a location or correctly refers back to this in location
-        assert getLocation() == null ||  getLocation().coordinate == this;
+        assert getLocation() == null || getLocation().coordinate.isEqual(this);
+    }
+
+    /**
+     * @return a string representation of this abstract coordinate.
+     */
+    @Override
+    public String toString() {
+        this.assertClassInvariants();
+        return this.asCartesianCoordinate().toString();
     }
 }

@@ -98,7 +98,7 @@ public class Location {
             !photo.equals(other.photo))
 			return false;
         if (coordinate != null && other.coordinate != null &&
-            !coordinate.equals(other.coordinate))
+            !coordinate.isEqual(other.coordinate))
             return false;
 
 		return true;
@@ -117,7 +117,7 @@ public class Location {
      */
     public void assertClassInvariants() {
         // make sure photo is either not set or correctly refers back to this
-        assert assertNotNull(this.photo) || this.photo.location == this;
+        assert this.photo == null || this.photo.location.equals(this);
     }
 
     private boolean assertNotNull(Object o) {
