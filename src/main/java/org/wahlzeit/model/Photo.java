@@ -107,8 +107,9 @@ public class Photo extends DataObject {
 	 * @methodtype constructor
 	 */
 	public Photo(PhotoId myId) {
+		if (myId == null) throw new IllegalArgumentException("Can't create Photo with null for Id");
+
 		id = myId;
-		
 		incWriteCount();
 	}
 	
@@ -117,6 +118,8 @@ public class Photo extends DataObject {
 	 * @methodtype constructor
 	 */
 	public Photo(ResultSet rset) throws SQLException {
+		if (rset == null) throw new IllegalArgumentException("Can't create Photo from null sql resultset");
+
 		readFrom(rset);
 	}
 

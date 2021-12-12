@@ -10,18 +10,21 @@ public class SphericCoordinate extends AbstractCoordinate {
     private double phi, theta, radius;
 
     public SphericCoordinate(double phi, double theta, double radius) {
-        assertNotNaN(phi, theta, radius);
+        if (Double.isNaN(phi) || Double.isNaN(theta) || Double.isNaN(radius)) {
+            throw new IllegalArgumentException("Can't make new spheric coordiante instance");
+        }
 
         this.phi = phi;
         this.theta = theta;
         this.radius = radius;
 
-        assertNotNaN(this.phi, this.theta, this.radius);
+        assertClassInvariants();
     }
 
     public SphericCoordinate(double phi, double theta, double radius, Location l) {
-        assertNotNaN(phi, theta, radius);
-        assertNotNull(l);
+        if (l == null || Double.isNaN(phi) || Double.isNaN(theta) || Double.isNaN(radius)) {
+            throw new IllegalArgumentException("Can't make new spheric coordiante instance");
+        }
 
         this.phi = phi;
         this.theta = theta;
@@ -29,8 +32,8 @@ public class SphericCoordinate extends AbstractCoordinate {
 
         this.setLocation(l);
 
-        assertNotNaN(this.phi, this.theta, this.radius);
         assertNotNull(this.getLocation());
+        assertClassInvariants();
     }
 
     /**
@@ -65,7 +68,9 @@ public class SphericCoordinate extends AbstractCoordinate {
 
     @Override
     public double getCartesianDistance(Coordinate c) {
-        assertNotNull(c);
+        if (c == null) {
+            throw new IllegalArgumentException("Can't get distance to null coordinate");
+        }
 
         double distance = this.asCartesianCoordinate().getCartesianDistance(c);
         assertNotNaN(distance);
@@ -84,8 +89,6 @@ public class SphericCoordinate extends AbstractCoordinate {
      */
     @Override
     public int hashCode() {
-        assertNotNaN(radius, theta, phi);
-
         int result = 0;
         if (getLocation() != null) {
             result += getLocation().hashCode();
@@ -129,7 +132,7 @@ public class SphericCoordinate extends AbstractCoordinate {
      */
     @Override
     public String toString() {
-        assertNotNaN(radius, theta, phi);
+        assertClassInvariants();
         return "(" + radius + ", " + theta + ", " + phi + ") [SPHERIC]";
     }
 

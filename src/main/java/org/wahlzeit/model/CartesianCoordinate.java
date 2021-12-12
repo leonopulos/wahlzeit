@@ -14,18 +14,21 @@ public class CartesianCoordinate extends AbstractCoordinate {
     private double x, y, z;
 
     public CartesianCoordinate(double x, double y, double z) {
-        assertNotNaN(x, y, z);
+        if (Double.isNaN(x) || Double.isNaN(y) || Double.isNaN(z)) {
+            throw new IllegalArgumentException("Can't make new cartesian coordiante instance");
+        }
 
         this.x = x;
         this.y = y;
         this.z = z;
 
-        assertNotNaN(this.x, this.y, this.z);
+        assertClassInvariants();
     }
 
     public CartesianCoordinate(double x, double y, double z, Location l) {
-        assertNotNaN(x, y, z);
-        assertNotNull(l);
+        if (l == null || Double.isNaN(x) || Double.isNaN(y) || Double.isNaN(z)) {
+            throw new IllegalArgumentException("Can't make new cartesian coordiante instance");
+        }
 
         this.x = x;
         this.y = y;
@@ -33,8 +36,8 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
         this.setLocation(l);
 
-        assertNotNaN(this.x, this.y, this.z);
         assertNotNull(this.getLocation());
+        assertClassInvariants();
     }
 
     /**
@@ -63,7 +66,9 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
     // Cartesian distance
     private double getDistance(CartesianCoordinate other) {
-        assertNotNaN(this.x, this.y, this.z);
+        if (other == null) {
+            throw new IllegalArgumentException("Can't get distance to null coordinate");
+        }
 
         if (other == null) return Double.NaN;
 
@@ -88,9 +93,12 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
     @Override
     public double getCartesianDistance(Coordinate c) {
-        assertNotNull(c);
+        if (c == null) {
+            throw new IllegalArgumentException("Can't get distance to null coordinate");
+        }
 
         double distance = this.getDistance(c.asCartesianCoordinate());
+
         assertNotNaN(distance);
 
         return distance;
@@ -107,8 +115,6 @@ public class CartesianCoordinate extends AbstractCoordinate {
      */
     @Override
     public int hashCode() {
-        assertNotNaN(this.x, this.y, this.z);
-
         int result = 0;
         if (getLocation() != null) {
             result += getLocation().hashCode();
@@ -152,8 +158,6 @@ public class CartesianCoordinate extends AbstractCoordinate {
      */
     @Override
     public String toString() {
-        assertNotNaN(this.x, this.y, this.z);
-
         return "(" + x + ", " + y + ", " + z + ") [CARTESIAN]";
     }
 

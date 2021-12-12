@@ -21,33 +21,36 @@ public class Location {
 	 * Locations require a Coordinate object
 	 */
 	public Location(Coordinate c) {
-        if (c == null) throw new NullPointerException("Coordinate must not be null when creating Location object");
+        if (c == null) throw new IllegalArgumentException("Coordinate must not be null when creating Location object");
         
         coordinate = c;
 
         assertNotNull(this.coordinate);
+        assertClassInvariants();
     }
 
     public Location(Coordinate c, Photo p) {
-        if (c == null) throw new NullPointerException("Coordinate must not be null when creating Location object");
+        if (p == null || c == null) throw new IllegalArgumentException("Coordinate must not be null or other constructor should have been used for Location");
         
         coordinate = c;
         setPhoto(p);
 
         assertNotNull(this.coordinate);
         assertNotNull(this.photo);
-	}
+        assertClassInvariants();
+    }
 
     /**
 	 * @methodtype set (bi-directional with private attribute Photo.location)
 	 */
     protected void setPhoto(Photo p) {
-        if (p == null) throw new NullPointerException("Photo must not be null when setting Location.photo parameter");
+        if (p == null) throw new IllegalArgumentException("Photo must not be null when setting Location.photo parameter");
 
         photo = p;
         p.setLocation(this);
 
         assertNotNull(this.photo);
+        assertClassInvariants();
     }
 
     /**
@@ -61,7 +64,6 @@ public class Location {
      * @methodtype get
      */
     public Coordinate getCoordinate() {
-        assertNotNull(this.coordinate);
         return this.coordinate;
     }
 
@@ -109,7 +111,7 @@ public class Location {
      */
 	@Override
 	public String toString() {
-		return "Location " + coordinate.toString();
+        return "Location " + coordinate.toString();
 	}
 
     /**

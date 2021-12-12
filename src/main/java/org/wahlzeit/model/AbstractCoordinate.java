@@ -23,14 +23,12 @@ public abstract class AbstractCoordinate implements Coordinate {
      * @methodtype set (bi-directional with private attribute Location.coordinate)
      */
     protected Coordinate setLocation(Location loc) {
-        assertNotNull(loc);
-
         if (loc == null) {
-            System.err.println("Won't set location attribute of coordinate to null");
-        } else {
-            this.location = loc;
-            loc.coordinate = this;
+            throw new IllegalArgumentException("Can't set location attribute of coordinate to null");
         }
+
+        this.location = loc;
+        loc.coordinate = this;
 
         return this;
     }
@@ -42,7 +40,10 @@ public abstract class AbstractCoordinate implements Coordinate {
      * @return the calculated central angle between this and c
      */
     public double getCentralAngle(Coordinate c) {
-        assertNotNull(c);
+        if (c == null) {
+            throw new IllegalArgumentException("Can't get angle to null coordinate");
+        }
+
 
         double ro1 = this.asSphericCoordinate().getPhi();
         double lam1 = this.asSphericCoordinate().getTheta();
@@ -55,8 +56,10 @@ public abstract class AbstractCoordinate implements Coordinate {
 
         double C = Math.sqrt(deltaX*deltaX + deltaY*deltaY + deltaZ*deltaZ);
 
+
         assertNotNaN(C);
         assert C >= 0 && C <= 2 * Math.PI;
+
 
         return 2 * Math.asin(C / 2);
     }
@@ -80,8 +83,9 @@ public abstract class AbstractCoordinate implements Coordinate {
      * Distance calculation done according to cartesian distance (euclidian norm)
      */
     private boolean isWithinDistance(Coordinate c, double epsilon) {
-        assertNotNull(c);
-        assertNotNaN(epsilon);
+        if (c == null || Double.isNaN(epsilon)) {
+            throw new IllegalArgumentException("Can't get distance of null coordinate or NaN distance");
+        }
 
         return (this.getCartesianDistance(c) < epsilon);
     }
@@ -94,8 +98,11 @@ public abstract class AbstractCoordinate implements Coordinate {
      * @return SphericCoordinate representation of c Coordinate
      */
     protected static SphericCoordinate fromCartesian(CartesianCoordinate c) {
-        assertNotNull(c);
-        assertNotNaN(c.getX(), c.getY(), c.getZ());
+        if (c == null) {
+            throw new IllegalArgumentException("Can't convert null coordinate");
+        }
+        c.assertClassInvariants();
+
 
         double x = c.getX();
         double y = c.getY();
@@ -104,6 +111,7 @@ public abstract class AbstractCoordinate implements Coordinate {
         double radius = Math.sqrt(x*x + y*y + z*z);
         double theta = radius == 0 ? 0 : Math.acos(z / radius);
         double phi = Math.atan2(y, x);
+
 
         assertNotNaN(radius, theta, phi);
 
@@ -121,8 +129,11 @@ public abstract class AbstractCoordinate implements Coordinate {
      * @return CartesianCoordinate representation of c Coordinate
      */
     protected static CartesianCoordinate fromSpheric(SphericCoordinate c) {
-        assertNotNull(c);
-        assertNotNaN(c.getRadius(), c.getPhi(), c.getTheta());
+        if (c == null) {
+            throw new IllegalArgumentException("Can't convert null coordinate");
+        }
+        c.assertClassInvariants();
+
 
         double r = c.getRadius();
         double phi = c.getPhi();
@@ -131,6 +142,7 @@ public abstract class AbstractCoordinate implements Coordinate {
         double x = r * Math.cos(phi) * Math.sin(theta);
         double y = r * Math.sin(phi) * Math.sin(theta);
         double z = r * Math.cos(theta);
+
 
         assertNotNaN(x, y, z);
 

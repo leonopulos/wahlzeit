@@ -36,7 +36,7 @@ public class PhotoTest {
         assertTrue(l1.getPhoto() == p);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = java.lang.IllegalArgumentException.class)
 	public void createLocationWithoutCoordinate() {
 		new Location(null);
 	}

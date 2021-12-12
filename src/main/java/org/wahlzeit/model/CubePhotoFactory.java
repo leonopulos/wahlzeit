@@ -41,10 +41,14 @@ public class CubePhotoFactory extends PhotoFactory {
     }
 
     public CubePhoto createPhoto(PhotoId id) {
+        if (id == null) throw new IllegalArgumentException("Can't create Photo with null for Id");
+
         return new CubePhoto(id);
     }
 
     public CubePhoto createPhoto(ResultSet rs) throws SQLException {
+        if (rs == null) throw new IllegalArgumentException("Can't create Photo from null sql resultset");
+
         return new CubePhoto(rs);
     }
 }

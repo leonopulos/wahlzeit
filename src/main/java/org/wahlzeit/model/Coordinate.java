@@ -21,13 +21,13 @@ public interface Coordinate {
      * Returns the Cartesian Distance (Euclidian Norm) between this Coordinate Object and the other Coordinate Object.
      * @throws NullPointerException if the other Coordinate is null.
      */
-    public double getCartesianDistance(Coordinate other) throws NullPointerException;
+    public double getCartesianDistance(Coordinate other) throws IllegalArgumentException;
 
     /**
      * Returns the Central Angle between this Coordinate Object and the other Coordinate Object.
      * @throws NullPointerException if the other Coordinate is null.
      */
-    public double getCentralAngle(Coordinate other) throws NullPointerException;
+    public double getCentralAngle(Coordinate other) throws IllegalArgumentException;
 
     /**
      * Checks if other is within a certain (small) cartesian distance to this. Thus avoids double comparison errors.
