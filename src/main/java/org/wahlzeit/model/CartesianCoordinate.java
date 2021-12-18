@@ -11,9 +11,9 @@ package org.wahlzeit.model;
  */
 public class CartesianCoordinate extends AbstractCoordinate {
 
-    private double x, y, z;
+    private final double x, y, z;
 
-    public CartesianCoordinate(double x, double y, double z) {
+    protected CartesianCoordinate(double x, double y, double z) {
         if (Double.isNaN(x) || Double.isNaN(y) || Double.isNaN(z)) {
             throw new IllegalArgumentException("Can't make new cartesian coordiante instance");
         }
@@ -25,7 +25,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
         assertClassInvariants();
     }
 
-    public CartesianCoordinate(double x, double y, double z, Location l) {
+    protected CartesianCoordinate(double x, double y, double z, Location l) {
         if (l == null || Double.isNaN(x) || Double.isNaN(y) || Double.isNaN(z)) {
             throw new IllegalArgumentException("Can't make new cartesian coordiante instance");
         }

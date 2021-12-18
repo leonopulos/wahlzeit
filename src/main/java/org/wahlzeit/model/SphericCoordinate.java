@@ -7,9 +7,9 @@ package org.wahlzeit.model;
 
 public class SphericCoordinate extends AbstractCoordinate {
 
-    private double phi, theta, radius;
+    private final double phi, theta, radius;
 
-    public SphericCoordinate(double phi, double theta, double radius) {
+    protected SphericCoordinate(double phi, double theta, double radius) {
         if (Double.isNaN(phi) || Double.isNaN(theta) || Double.isNaN(radius)) {
             throw new IllegalArgumentException("Can't make new spheric coordiante instance");
         }
@@ -21,7 +21,7 @@ public class SphericCoordinate extends AbstractCoordinate {
         assertClassInvariants();
     }
 
-    public SphericCoordinate(double phi, double theta, double radius, Location l) {
+    protected SphericCoordinate(double phi, double theta, double radius, Location l) {
         if (l == null || Double.isNaN(phi) || Double.isNaN(theta) || Double.isNaN(radius)) {
             throw new IllegalArgumentException("Can't make new spheric coordiante instance");
         }
