@@ -23,7 +23,7 @@ public abstract class AbstractCoordinate implements Coordinate {
     }
 
     /**
-     * @methodtype set (bi-directional with private attribute Location.coordinate)
+     * @methodtype set location
      */
     protected Coordinate setLocation(Location loc) {
         if (loc == null) {
@@ -31,7 +31,6 @@ public abstract class AbstractCoordinate implements Coordinate {
         }
 
         this.location = loc;
-        loc.coordinate = this;
 
         return this;
     }

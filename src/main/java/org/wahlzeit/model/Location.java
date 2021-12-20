@@ -41,13 +41,12 @@ public class Location {
     }
 
     /**
-	 * @methodtype set (bi-directional with private attribute Photo.location)
+	 * @methodtype set photo
 	 */
     protected void setPhoto(Photo p) {
         if (p == null) throw new IllegalArgumentException("Photo must not be null when setting Location.photo parameter");
 
         photo = p;
-        p.setLocation(this);
 
         assertNotNull(this.photo);
         assertClassInvariants();
@@ -119,7 +118,7 @@ public class Location {
      */
     public void assertClassInvariants() {
         // make sure photo is either not set or correctly refers back to this
-        assert this.photo == null || this.photo.location.equals(this);
+        assert this.photo == null || (this.photo.location == null || this.photo.location.equals(this));
     }
 
     private boolean assertNotNull(Object o) {
