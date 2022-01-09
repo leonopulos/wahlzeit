@@ -5,9 +5,6 @@
 
 package org.wahlzeit.model;
 
-import java.util.HashMap;
-import java.util.Locale;
-
 public abstract class AbstractCoordinate implements Coordinate {
 
     /**
@@ -92,53 +89,6 @@ public abstract class AbstractCoordinate implements Coordinate {
         return (this.getCartesianDistance(c) < epsilon);
     }
 
-    private static HashMap<String, Coordinate> coordinateInstances = new HashMap<>();
-    /**
-     * Part of the Value Type implementation (week8)
-     * @param type String must contain "cartesian" or "spheric"
-     * @param values [x, y, z] or [phi, theta, radius] values corresponding to *type*
-     * @param l a location object to link the new coordinat to or null
-     * @return a new [spheric|cartesian]coordiante (depending on *type*) with coordinate *values* and location attribute *l*
-     */
-    public static Coordinate getCoordinate(String type, double[] values, Location l) {
-        if (values.length != 3 || !assertNotNaN(values)) {
-            throw new IllegalArgumentException("getCoordinate must receive exactly 3 non NaN doubles");
-        }
-
-        if (!type.toLowerCase(Locale.ROOT).equals("cartesian") && !type.toLowerCase(Locale.ROOT).equals("spheric")) {
-            throw new IllegalArgumentException("only coordinate implementations for cartesian and spheric available");
-        }
-
-        // look up if object exists already
-        String coordinateRepresentation = "" + type + values[0] + values[1] + values[2] + ((l == null) ? "" : l.toString());
-        if (coordinateInstances.containsKey(coordinateRepresentation)) {
-            return coordinateInstances.get(coordinateRepresentation);
-        }
-
-        // if immutable shared Coordiante object has not been created yet, create a new one and store it
-        Coordinate coordinate;
-
-        if (type.toLowerCase(Locale.ROOT).contains("cartesian")) {
-            if (l == null) {
-                coordinate = new CartesianCoordinate(values[0], values[1], values[2]);
-            } else {
-                coordinate = new CartesianCoordinate(values[0], values[1], values[2], l);
-            }
-        } else if (type.toLowerCase(Locale.ROOT).contains("spheric")) {
-            if (l == null) {
-                coordinate = new SphericCoordinate(values[0], values[1], values[2]);
-            } else {
-                coordinate = new SphericCoordinate(values[0], values[1], values[2], l);
-            }
-        } else {
-            throw new IllegalArgumentException("only coordinate implementations for cartesian and spheric available");
-        }
-
-        coordinateInstances.put(coordinateRepresentation, coordinate);
-
-        return coordinate;
-    }
-
     /**
      * Used for implementation of interface method toSphericCoordinate.
      * Does conversion from 3D cartesian vector to 3D polar coordinates according to wikipedia math.
@@ -163,9 +113,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 
         assertNotNaN(radius, theta, phi);
 
-        return (SphericCoordinate) AbstractCoordinate.getCoordinate("spheric",
-                                                new double[] {phi, theta, radius},
-                                                c.getLocation());
+        return SphericCoordinate.getCoordinate(phi, theta, radius, c.getLocation());
     }
 
     /**
@@ -192,9 +140,7 @@ public abstract class AbstractCoordinate implements Coordinate {
 
         assertNotNaN(x, y, z);
 
-        return (CartesianCoordinate) AbstractCoordinate.getCoordinate("cartesian",
-                                                new double[] {x, y, z},
-                                                c.getLocation());
+        return CartesianCoordinate.getCoordinate(x, y, z, c.getLocation());
     }
 
     protected static boolean assertNotNull(Object o) {

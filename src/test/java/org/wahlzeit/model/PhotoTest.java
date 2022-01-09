@@ -19,9 +19,9 @@ public class PhotoTest {
     public void testLocation() {
         // constructors
         Photo p = new Photo();
-        CartesianCoordinate c1 = new CartesianCoordinate(0, 0, 0);
+        CartesianCoordinate c1 = CartesianCoordinate.getCoordinate(0, 0, 0);
         Location l1 = new Location(c1);
-        Location l2 = new Location(new CartesianCoordinate(0, 0, 0.1), p);
+        Location l2 = new Location(CartesianCoordinate.getCoordinate(0, 0, 0.1), p);
 
         // getCoordinate
         assertTrue(l1.getCoordinate() == c1);
@@ -29,7 +29,7 @@ public class PhotoTest {
         // equals
         assertTrue(l1.equals(l1));
         assertFalse(l1.equals(l2));
-        assertTrue(l1.equals(new Location(new CartesianCoordinate(0, 0, 0))));
+        assertTrue(l1.equals(new Location(CartesianCoordinate.getCoordinate(0, 0, 0))));
 
         // set and get photo
         l1.setPhoto(p);

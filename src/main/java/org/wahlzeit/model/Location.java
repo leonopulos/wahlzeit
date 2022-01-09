@@ -76,7 +76,7 @@ public class Location {
         if (photo != null) {
             result += 3 * photo.hashCode();
         }
-        result += 5 * coordinate.hashCode();
+        result += 5 * coordinate.toString().hashCode();
 
         return result;
 	}

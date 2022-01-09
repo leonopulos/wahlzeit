@@ -5,11 +5,14 @@
 
 package org.wahlzeit.model;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 public class SphericCoordinate extends AbstractCoordinate {
 
     private final double phi, theta, radius;
 
-    protected SphericCoordinate(double phi, double theta, double radius) {
+    private SphericCoordinate(double phi, double theta, double radius) {
         if (Double.isNaN(phi) || Double.isNaN(theta) || Double.isNaN(radius)) {
             throw new IllegalArgumentException("Can't make new spheric coordiante instance");
         }
@@ -21,7 +24,7 @@ public class SphericCoordinate extends AbstractCoordinate {
         assertClassInvariants();
     }
 
-    protected SphericCoordinate(double phi, double theta, double radius, Location l) {
+    private SphericCoordinate(double phi, double theta, double radius, Location l) {
         if (l == null || Double.isNaN(phi) || Double.isNaN(theta) || Double.isNaN(radius)) {
             throw new IllegalArgumentException("Can't make new spheric coordiante instance");
         }
@@ -60,7 +63,49 @@ public class SphericCoordinate extends AbstractCoordinate {
         return radius;
     }
 
-    // Coordinate interface methods
+    private static Map<Integer, SphericCoordinate> coordinateInstances = new ConcurrentHashMap<>();
+    /**
+     * Part of the Value Type implementation (week8)
+     * @param phi
+     * @param theta
+     * @param radius
+     * @param location a location object to link the new coordinate to or null
+     * @return a new sphericCoordinate with coordinate @param radius, theta, phi and location attribute values,
+     *         or the stored object if one with the same attribute values already has been created.
+     */
+    public static SphericCoordinate getCoordinate(double radius, double theta, double phi, Location location) {
+        if (!assertNotNaN(phi) || !assertNotNaN(theta) || !assertNotNaN(radius)) {
+            throw new IllegalArgumentException("getCoordinate must receive exactly 3 non NaN doubles");
+        }
+
+        // look up if object exists already
+        Integer coordianteHashCode = calcHashCode(phi, theta, radius, location);
+
+        if (coordinateInstances.containsKey(coordianteHashCode)) {
+            return coordinateInstances.get(coordianteHashCode);
+        }
+
+        // if immutable shared Coordiante object has not been created yet, create a new one and store it
+        SphericCoordinate coordinate;
+
+        if (location == null) {
+            coordinate = new SphericCoordinate(phi, theta, radius);
+        } else {
+            coordinate = new SphericCoordinate(phi, theta, radius, location);
+        }
+
+        coordinateInstances.put(coordianteHashCode, coordinate);
+
+        return coordinate;
+    }
+
+    public static SphericCoordinate getCoordinate(double radius, double theta, double phi) {
+        return getCoordinate(radius, theta, phi, null);
+    }
+
+    /**
+     * Coordinate interface methods
+     */
     @Override
     public CartesianCoordinate asCartesianCoordinate() {
         return fromSpheric(this);
@@ -89,13 +134,17 @@ public class SphericCoordinate extends AbstractCoordinate {
      */
     @Override
     public int hashCode() {
+        return calcHashCode(getPhi(), getTheta(), getRadius(), getLocation());
+    }
+
+    private static int calcHashCode(double phi, double theta, double radius, Location location) {
         int result = 0;
-        if (getLocation() != null) {
-            result += getLocation().hashCode();
+        if (location != null) {
+            result += location.hashCode();
         }
-        result += 2 * Double.valueOf(radius).hashCode();
+        result += 2 * Double.valueOf(phi).hashCode();
         result -= 3 * Double.valueOf(theta).hashCode();
-        result += 5 * Double.valueOf(phi).hashCode();
+        result += 5 * Double.valueOf(radius).hashCode();
 
         return result;
     }
@@ -114,11 +163,11 @@ public class SphericCoordinate extends AbstractCoordinate {
         if (getClass() != obj.getClass())
             return false;
         SphericCoordinate other = (SphericCoordinate) obj;
-        if (radius != other.radius)
+        if (phi != other.phi)
             return false;
         if (theta != other.theta)
             return false;
-        if (phi != other.phi)
+        if (radius != other.radius)
             return false;
         if (getLocation() != null && other.getLocation() != null &&
                 !getLocation().equals(other.getLocation()))
@@ -133,14 +182,14 @@ public class SphericCoordinate extends AbstractCoordinate {
     @Override
     public String toString() {
         assertClassInvariants();
-        return "(" + radius + ", " + theta + ", " + phi + ") [SPHERIC]";
+        return "(" + phi + ", " + theta + ", " + radius + ") [SPHERIC]";
     }
 
     /**
      * Asserts that all class invariant conditions are true. These depend on the semantics of the domain model.
      */
     public void assertClassInvariants() {
-        assertNotNaN(radius, theta, phi);
+        assertNotNaN(phi, theta, radius);
 
         super.assertClassInvariants();
     }

@@ -6,6 +6,9 @@
 package org.wahlzeit.model;
 
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 /*
  * Local plain class to store 3D Cartesian Coordinate values.
  */
@@ -13,7 +16,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
 
     private final double x, y, z;
 
-    protected CartesianCoordinate(double x, double y, double z) {
+    private CartesianCoordinate(double x, double y, double z) {
         if (Double.isNaN(x) || Double.isNaN(y) || Double.isNaN(z)) {
             throw new IllegalArgumentException("Can't make new cartesian coordiante instance");
         }
@@ -25,7 +28,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
         assertClassInvariants();
     }
 
-    protected CartesianCoordinate(double x, double y, double z, Location l) {
+    private CartesianCoordinate(double x, double y, double z, Location l) {
         if (l == null || Double.isNaN(x) || Double.isNaN(y) || Double.isNaN(z)) {
             throw new IllegalArgumentException("Can't make new cartesian coordiante instance");
         }
@@ -62,6 +65,46 @@ public class CartesianCoordinate extends AbstractCoordinate {
     public double getZ() {
         assertNotNaN(this.z);
         return z;
+    }
+
+    private static Map<Integer, CartesianCoordinate> coordinateInstances = new ConcurrentHashMap<>();
+    /**
+     * Part of the Value Type implementation (week8)
+     * @param x
+     * @param y
+     * @param z
+     * @param location a location object to link the new coordinate to or null
+     * @return a new cartesianCoordinate with coordinate @param x y z and location attribute values,
+     *         or the stored object if one with the same attribute values already has been created.
+     */
+    public static CartesianCoordinate getCoordinate(double x, double y, double z, Location location) {
+        if (!assertNotNaN(x) || !assertNotNaN(y) || !assertNotNaN(z)) {
+            throw new IllegalArgumentException("getCoordinate must receive exactly 3 non NaN doubles");
+        }
+
+        // look up if object exists already
+        Integer coordianteHashCode = calcHashCode(x, y, z, location);
+
+        if (coordinateInstances.containsKey(coordianteHashCode)) {
+            return coordinateInstances.get(coordianteHashCode);
+        }
+
+        // if immutable shared Coordiante object has not been created yet, create a new one and store it
+        CartesianCoordinate coordinate;
+
+        if (location == null) {
+            coordinate = new CartesianCoordinate(x, y, z);
+        } else {
+            coordinate = new CartesianCoordinate(x, y, z, location);
+        }
+
+        coordinateInstances.put(coordianteHashCode, coordinate);
+
+        return coordinate;
+    }
+
+    public static CartesianCoordinate getCoordinate(double x, double y, double z) {
+        return getCoordinate(x, y, z, null);
     }
 
     // Cartesian distance
@@ -115,9 +158,13 @@ public class CartesianCoordinate extends AbstractCoordinate {
      */
     @Override
     public int hashCode() {
+        return calcHashCode(getX(), getY(), getZ(), getLocation());
+    }
+
+    private static int calcHashCode(double x, double y, double z, Location location) {
         int result = 0;
-        if (getLocation() != null) {
-            result += getLocation().hashCode();
+        if (location != null) {
+            result += location.hashCode();
         }
         result += 2 * Double.valueOf(x).hashCode();
         result -= 3 * Double.valueOf(y).hashCode();

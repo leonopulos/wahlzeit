@@ -161,7 +161,7 @@ public class Photo extends DataObject {
 		double x = rset.getDouble("coord_x");
 		double y = rset.getDouble("coord_y");
 		double z = rset.getDouble("coord_z");
-		CartesianCoordinate coordinate = (CartesianCoordinate) AbstractCoordinate.getCoordinate("cartesian", new double[] {x, y, z}, location);
+		CartesianCoordinate coordinate = CartesianCoordinate.getCoordinate(x, y, z, location);
 		location = new Location(coordinate, this);
 	}
 	

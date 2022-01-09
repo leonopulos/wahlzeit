@@ -10,8 +10,8 @@ public class SphericCoordinateTest {
     @Test
     public void testSphericCoordinateConstructor() {
         // constructors
-        SphericCoordinate c1 = new SphericCoordinate(0, 0, 0);
-        SphericCoordinate c2 = new SphericCoordinate(0, 0, 0.1);
+        SphericCoordinate c1 = SphericCoordinate.getCoordinate(0, 0, 0);
+        SphericCoordinate c2 = SphericCoordinate.getCoordinate(0, 0, 0.1);
 
         c1.assertClassInvariants();
         c2.assertClassInvariants();
@@ -20,8 +20,8 @@ public class SphericCoordinateTest {
     @Test
     public void testSphericCoordinateCoords() {
         // constructors
-        SphericCoordinate c1 = new SphericCoordinate(0, 0, 0);
-        SphericCoordinate c2 = new SphericCoordinate(0, 0, 0.1);
+        SphericCoordinate c1 = SphericCoordinate.getCoordinate(0, 0, 0);
+        SphericCoordinate c2 = SphericCoordinate.getCoordinate(0, 0, 0.1);
 
         // getters for coords
         assertTrue(c1.getPhi() == 0);
@@ -35,8 +35,8 @@ public class SphericCoordinateTest {
     @Test
     public void testSphericCoordinateLocation() {
         // constructors
-        SphericCoordinate c1 = new SphericCoordinate(0, 0, 0);
-        SphericCoordinate c2 = new SphericCoordinate(0, 0, 0.1);
+        SphericCoordinate c1 = SphericCoordinate.getCoordinate(0, 0, 0);
+        SphericCoordinate c2 = SphericCoordinate.getCoordinate(0, 0, 0.1);
 
         // set and get Location
         Location l = new Location(c2);
@@ -53,14 +53,14 @@ public class SphericCoordinateTest {
     @Test
     public void testSphericCoordinateIsEqual() {
         // constructors
-        SphericCoordinate c1 = new SphericCoordinate(0, 0, 0);
-        SphericCoordinate c2 = new SphericCoordinate(0, 0, 0.1);
+        SphericCoordinate c1 = SphericCoordinate.getCoordinate(0, 0, 0);
+        SphericCoordinate c2 = SphericCoordinate.getCoordinate(0, 0, 0.1);
 
         // isEqual
         assertTrue(c1.isEqual(c1));
-        assertFalse(c1.isEqual(c2));
-        assertTrue(c1.isEqual(new CartesianCoordinate(0, 0, 0)));
-        assertTrue(c1.isEqual(new CartesianCoordinate(0, 0, 0.001)));
+        assertFalse(c1.equals(c2));
+        assertTrue(c1.isEqual(CartesianCoordinate.getCoordinate(0, 0, 0)));
+        assertTrue(c1.isEqual(CartesianCoordinate.getCoordinate(0, 0, 0.001)));
 
         c1.assertClassInvariants();
         c2.assertClassInvariants();
@@ -69,8 +69,8 @@ public class SphericCoordinateTest {
     @Test
     public void testSphericCoordinateGetDistance() {
         // constructors
-        SphericCoordinate c1 = new SphericCoordinate(0, 0, 0);
-        SphericCoordinate c2 = new SphericCoordinate(0, 0, 0.1);
+        SphericCoordinate c1 = SphericCoordinate.getCoordinate(0, 0, 0);
+        SphericCoordinate c2 = SphericCoordinate.getCoordinate(0, 0, 0.1);
 
         // getDistance
         assertTrue(c1.getCartesianDistance(c1) == 0);
@@ -83,8 +83,8 @@ public class SphericCoordinateTest {
     @Test
     public void testSphericCoordinateAsCartesianCoordinate() {
         // constructors
-        SphericCoordinate c1 = new SphericCoordinate(0, 0, 0);
-        SphericCoordinate c2 = new SphericCoordinate(0, 0, 0.1);
+        SphericCoordinate c1 = SphericCoordinate.getCoordinate(0, 0, 0);
+        SphericCoordinate c2 = SphericCoordinate.getCoordinate(0, 0, 0.1);
 
         // asCartesianCoordinate
         CartesianCoordinate cc1 = c1.asCartesianCoordinate();
@@ -102,8 +102,8 @@ public class SphericCoordinateTest {
     @Test
     public void testSphericCoordinateGetCentralAngle() {
         // constructors
-        SphericCoordinate c1 = new SphericCoordinate(0, 0, 0);
-        SphericCoordinate c2 = new SphericCoordinate(0, 0, 0.1);
+        SphericCoordinate c1 = SphericCoordinate.getCoordinate(0, 0, 0);
+        SphericCoordinate c2 = SphericCoordinate.getCoordinate(0, 0, 0.1);
 
         // getCentralAngle
         assertTrue(c1.getCentralAngle(c2) >= 0);
@@ -114,7 +114,7 @@ public class SphericCoordinateTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testSphericCoordinateDistanceToNull() {
-        SphericCoordinate c1 = new SphericCoordinate(0, 0, 0);
+        SphericCoordinate c1 = SphericCoordinate.getCoordinate(0, 0, 0);
         c1.getCartesianDistance(null);
 
         c1.assertClassInvariants();
@@ -122,7 +122,7 @@ public class SphericCoordinateTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testSphericCoordinateCentralAngleWithNull() {
-        SphericCoordinate c1 = new SphericCoordinate(0, 0, 0);
+        SphericCoordinate c1 = SphericCoordinate.getCoordinate(0, 0, 0);
         c1.getCentralAngle(null);
 
         c1.assertClassInvariants();
