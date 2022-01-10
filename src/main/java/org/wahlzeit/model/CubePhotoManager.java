@@ -5,8 +5,14 @@
 
 package org.wahlzeit.model;
 
+import org.wahlzeit.utils.DesignPattern;
+
 import java.sql.*;
 
+@DesignPattern(
+        name = "Singleton",
+        participants = { "Singleton" }
+)
 public class CubePhotoManager extends PhotoManager {
 
     protected CubePhoto createObject(ResultSet rset) throws SQLException {

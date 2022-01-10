@@ -6,12 +6,18 @@
 package org.wahlzeit.model;
 
 
+import org.wahlzeit.utils.DesignPattern;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /*
  * Local plain class to store 3D Cartesian Coordinate values.
  */
+@DesignPattern(
+    name = "Flyweight",
+    participants = { "Flyweight" }
+)
 public class CartesianCoordinate extends AbstractCoordinate {
 
     private final double x, y, z;
@@ -67,7 +73,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
         return z;
     }
 
-    private static Map<Integer, CartesianCoordinate> coordinateInstances = new ConcurrentHashMap<>();
+
     /**
      * Part of the Value Type implementation (week8)
      * @param x
@@ -75,21 +81,26 @@ public class CartesianCoordinate extends AbstractCoordinate {
      * @param z
      * @param location a location object to link the new coordinate to or null
      * @return a new cartesianCoordinate with coordinate @param x y z and location attribute values,
-     *         or the stored object if one with the same attribute values already has been created.
+     *         or the stored object in @value coordinateInstances if one with the same attribute values already has been saved.
      */
+    private static Map<Integer, CartesianCoordinate> coordinateInstances = new ConcurrentHashMap<>();
+    @DesignPattern(
+            name = "Flyweight",
+            participants = { "FlyweightFactory" }
+    )
     public static CartesianCoordinate getCoordinate(double x, double y, double z, Location location) {
         if (!assertNotNaN(x) || !assertNotNaN(y) || !assertNotNaN(z)) {
             throw new IllegalArgumentException("getCoordinate must receive exactly 3 non NaN doubles");
         }
 
         // look up if object exists already
-        Integer coordianteHashCode = calcHashCode(x, y, z, location);
+        Integer coordinateHashCode = calcHashCode(x, y, z, location);
 
-        if (coordinateInstances.containsKey(coordianteHashCode)) {
-            return coordinateInstances.get(coordianteHashCode);
+        if (coordinateInstances.containsKey(coordinateHashCode)) {
+            return coordinateInstances.get(coordinateHashCode);
         }
 
-        // if immutable shared Coordiante object has not been created yet, create a new one and store it
+        // if immutable shared Coordinate object has not been created yet, create a new one and store it
         CartesianCoordinate coordinate;
 
         if (location == null) {
@@ -98,7 +109,7 @@ public class CartesianCoordinate extends AbstractCoordinate {
             coordinate = new CartesianCoordinate(x, y, z, location);
         }
 
-        coordinateInstances.put(coordianteHashCode, coordinate);
+        coordinateInstances.put(coordinateHashCode, coordinate);
 
         return coordinate;
     }

@@ -9,10 +9,15 @@ import java.sql.*;
 import java.util.*;
 
 import org.wahlzeit.services.*;
+import org.wahlzeit.utils.DesignPattern;
 
 /**
  * The photo case manager provides access to and manages persistent photo cases.
  */
+@DesignPattern(
+	name = "Singleton",
+	participants = { "Singleton" }
+)
 public class PhotoCaseManager extends ObjectManager {
 	
 	/**

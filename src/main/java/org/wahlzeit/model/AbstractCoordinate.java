@@ -5,6 +5,8 @@
 
 package org.wahlzeit.model;
 
+import org.wahlzeit.utils.DesignPattern;
+
 public abstract class AbstractCoordinate implements Coordinate {
 
     /**
@@ -95,6 +97,10 @@ public abstract class AbstractCoordinate implements Coordinate {
      * @param c Coordinate Object to convert
      * @return SphericCoordinate representation of c Coordinate
      */
+    @DesignPattern(
+        name = "Flyweight",
+        participants = { "Client" }
+    )
     protected static SphericCoordinate fromCartesian(CartesianCoordinate c) {
         if (c == null) {
             throw new IllegalArgumentException("Can't convert null coordinate");
@@ -122,6 +128,10 @@ public abstract class AbstractCoordinate implements Coordinate {
      * @param c Coordinate Object to convert
      * @return CartesianCoordinate representation of c Coordinate
      */
+    @DesignPattern(
+        name = "Flyweight",
+        participants = { "Client" }
+    )
     protected static CartesianCoordinate fromSpheric(SphericCoordinate c) {
         if (c == null) {
             throw new IllegalArgumentException("Can't convert null coordinate");

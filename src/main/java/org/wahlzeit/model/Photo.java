@@ -14,6 +14,10 @@ import org.wahlzeit.utils.*;
 /**
  * A photo represents a user-provided (uploaded) photo.
  */
+@DesignPattern (
+	name = "AbstractFactory",
+	participants = { "Product" }
+)
 public class Photo extends DataObject {
 
 	/**
@@ -130,10 +134,11 @@ public class Photo extends DataObject {
 	public String getIdAsString() {
 		return String.valueOf(id.asInt());
 	}
-	
-	/**
-	 * 
-	 */
+
+	@DesignPattern(
+		name = "Flyweight",
+		participants = { "Client" }
+	)
 	public void readFrom(ResultSet rset) throws SQLException {
 		id = PhotoId.getIdFromInt(rset.getInt("id"));
 

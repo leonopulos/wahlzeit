@@ -5,8 +5,14 @@
 
 package org.wahlzeit.model;
 
+import org.wahlzeit.utils.DesignPattern;
+
 import java.sql.*;
 
+@DesignPattern(
+    name = "AbstractFactory",
+    participants = { "Product" }
+)
 public class CubePhoto extends Photo {
 
     public CubePhoto() {

@@ -10,10 +10,15 @@ import java.sql.*;
 
 import org.wahlzeit.services.*;
 import org.wahlzeit.services.mailing.*;
+import org.wahlzeit.utils.DesignPattern;
 
 /**
  * The UserManager provides access to and manages Users (including Moderators and Administrators).
  */
+@DesignPattern(
+	name = "Singleton",
+	participants = { "Singleton" }
+)
 public class UserManager extends ObjectManager {
 
 	/**

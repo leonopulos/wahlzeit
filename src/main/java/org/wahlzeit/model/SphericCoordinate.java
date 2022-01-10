@@ -5,9 +5,15 @@
 
 package org.wahlzeit.model;
 
+import org.wahlzeit.utils.DesignPattern;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+@DesignPattern(
+    name = "Flyweight",
+    participants = { "Flyweight" }
+)
 public class SphericCoordinate extends AbstractCoordinate {
 
     private final double phi, theta, radius;
@@ -63,7 +69,7 @@ public class SphericCoordinate extends AbstractCoordinate {
         return radius;
     }
 
-    private static Map<Integer, SphericCoordinate> coordinateInstances = new ConcurrentHashMap<>();
+
     /**
      * Part of the Value Type implementation (week8)
      * @param phi
@@ -71,21 +77,26 @@ public class SphericCoordinate extends AbstractCoordinate {
      * @param radius
      * @param location a location object to link the new coordinate to or null
      * @return a new sphericCoordinate with coordinate @param radius, theta, phi and location attribute values,
-     *         or the stored object if one with the same attribute values already has been created.
+     *         or the stored object in @value coordinateInstances if one with the same attribute values already has been saved.
      */
+    private static Map<Integer, SphericCoordinate> coordinateInstances = new ConcurrentHashMap<>();
+    @DesignPattern(
+            name = "Flyweight",
+            participants = { "FlyweightFactory" }
+    )
     public static SphericCoordinate getCoordinate(double radius, double theta, double phi, Location location) {
         if (!assertNotNaN(phi) || !assertNotNaN(theta) || !assertNotNaN(radius)) {
             throw new IllegalArgumentException("getCoordinate must receive exactly 3 non NaN doubles");
         }
 
         // look up if object exists already
-        Integer coordianteHashCode = calcHashCode(phi, theta, radius, location);
+        Integer coordinateHashCode = calcHashCode(phi, theta, radius, location);
 
-        if (coordinateInstances.containsKey(coordianteHashCode)) {
-            return coordinateInstances.get(coordianteHashCode);
+        if (coordinateInstances.containsKey(coordinateHashCode)) {
+            return coordinateInstances.get(coordinateHashCode);
         }
 
-        // if immutable shared Coordiante object has not been created yet, create a new one and store it
+        // if immutable shared Coordinate object has not been created yet, create a new one and store it
         SphericCoordinate coordinate;
 
         if (location == null) {
@@ -94,7 +105,7 @@ public class SphericCoordinate extends AbstractCoordinate {
             coordinate = new SphericCoordinate(phi, theta, radius, location);
         }
 
-        coordinateInstances.put(coordianteHashCode, coordinate);
+        coordinateInstances.put(coordinateHashCode, coordinate);
 
         return coordinate;
     }

@@ -6,9 +6,14 @@
 package org.wahlzeit.model;
 
 import org.wahlzeit.services.SysLog;
+import org.wahlzeit.utils.DesignPattern;
 
 import java.sql.*;
 
+@DesignPattern(
+    name = "AbstractFactory",
+    participants = { "Factory" }
+)
 public class CubePhotoFactory extends PhotoFactory {
 
     private static CubePhotoFactory instance = null;
