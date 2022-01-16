@@ -15,6 +15,8 @@ import java.sql.*;
 )
 public class CubePhoto extends Photo {
 
+    public Cube cube;
+
     public CubePhoto() {
         super();
     }
