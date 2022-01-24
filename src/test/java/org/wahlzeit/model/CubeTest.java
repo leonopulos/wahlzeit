@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
  */
 public class CubeTest {
 
-    static CubeManager manager = new CubeManager();
+    static CubeManager manager = CubeManager.getInstance();
 
     @Test(expected = java.lang.IllegalArgumentException.class)
     public void createCubeWithoutTypeTest() {

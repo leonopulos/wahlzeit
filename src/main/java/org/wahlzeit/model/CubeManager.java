@@ -10,13 +10,23 @@ import org.wahlzeit.utils.DesignPattern;
 import java.util.HashMap;
 import java.util.Map;
 
+// Also design pattern Singleton, but java @ interface isn't a repeatable annotation
 @DesignPattern(
         name = "ObjectManager",
         participants = { "ObjectManager" }
 )
 public class CubeManager {
 
+    private static CubeManager instance = new CubeManager();
     private Map<String, CubeType> cubeTypes = new HashMap<>();
+
+    private CubeManager() {
+
+    }
+
+    public static CubeManager getInstance() {
+        return instance;
+    }
 
     public Cube createCube(String typeName) {
         if (typeName == null)

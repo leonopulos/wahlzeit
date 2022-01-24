@@ -17,6 +17,10 @@ import java.util.List;
 public class Cube {
 
     public final CubeType type;
+
+    public String brand;
+    public String colorscheme;
+
     public final CubeManager manager;
     private List<CubePhoto> cubes = new ArrayList<>();
 
@@ -34,5 +38,25 @@ public class Cube {
 
     public boolean removePhoto(CubePhoto p) {
         return cubes.remove(p);
+    }
+
+    public CubeType getType() {
+        return this.type;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public String getColorscheme() {
+        return colorscheme;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public void setColorscheme(String colorscheme) {
+        this.colorscheme = colorscheme;
     }
 }
